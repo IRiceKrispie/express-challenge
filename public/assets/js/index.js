@@ -3,7 +3,12 @@ let noteText;
 let saveNoteBtn;
 let newNoteBtn;
 let noteList;
-let idCounter = 2;
+
+//get a random number for ids
+let getRandomNumber = () => Math.floor(Math.random() * 100000) + 1;
+
+////
+
 
 if (window.location.pathname === '/notes') {
   noteTitle = document.querySelector('.note-title');
@@ -68,11 +73,10 @@ const renderActiveNote = () => {
 };
 
 const handleNoteSave = () => {
-  idCounter += 1;
   const newNote = {
     title: noteTitle.value,
     text: noteText.value,
-    id: idCounter
+    id: getRandomNumber()
   };
   saveNote(newNote).then(() => {
     getAndRenderNotes();
