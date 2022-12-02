@@ -3,6 +3,7 @@ let noteText;
 let saveNoteBtn;
 let newNoteBtn;
 let noteList;
+let idCounter = 2;
 
 if (window.location.pathname === '/notes') {
   noteTitle = document.querySelector('.note-title');
@@ -67,9 +68,11 @@ const renderActiveNote = () => {
 };
 
 const handleNoteSave = () => {
+  idCounter += 1;
   const newNote = {
     title: noteTitle.value,
     text: noteText.value,
+    id: idCounter
   };
   saveNote(newNote).then(() => {
     getAndRenderNotes();
@@ -84,6 +87,8 @@ const handleNoteDelete = (e) => {
 
   const note = e.target;
   const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
+  console.log(noteId);
+  console.log(activeNote.id);
 
   if (activeNote.id === noteId) {
     activeNote = {};

@@ -1,5 +1,6 @@
 const express = require('express'); //import express
 const path = require('path'); //import path methods
+const { title } = require('process');
 const PORT = process.env.PORT || 3001; //what port to use. The environment variable or port 3001
 const app = express(); //allow express functionality 
 app.use(express.static('public'));
@@ -33,12 +34,13 @@ app.get('/api/notes', (req, res) => {
 app.post('/api/notes', (req, res) => {
     console.log(req.body);
 
-    const { title, text} = req.body;
+    const { title, text, id} = req.body;
 
     if (req.body) {
         const newTip = {
           title,
-          text
+          text,
+          id
         };
     
         readAndAppend(newTip, './db/db.json');
@@ -46,6 +48,20 @@ app.post('/api/notes', (req, res) => {
       } else {
         res.error('Error in adding tip');
       }
+});
+
+//DELETE Route
+app.delete('/api/notes/:id', (req, res) => {
+    const noteId = req.params.id;
+    readFromFile('./db/db.json')
+        .then((data) => JSON.parse(data))
+        .then((json) => {
+            const result = json.filter((note) => note.id != noteId);
+            
+            writeToFile('./db/db.json', result);
+
+            res.json(`Note ${noteId} has been deleted`);
+        });
 });
 
 //have our app listen
