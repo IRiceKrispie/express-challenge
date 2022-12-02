@@ -32,6 +32,20 @@ app.get('/api/notes', (req, res) => {
 //POST route for adding a new note
 app.post('/api/notes', (req, res) => {
     console.log(req.body);
+
+    const { title, text} = req.body;
+
+    if (req.body) {
+        const newTip = {
+          title,
+          text
+        };
+    
+        readAndAppend(newTip, './db/db.json');
+        res.json(`Tip added successfully 🚀`);
+      } else {
+        res.error('Error in adding tip');
+      }
 });
 
 //have our app listen
